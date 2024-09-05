@@ -22,6 +22,7 @@ feedback on password strength.
 ## Explanation:
 
 Length Check: Ensures the password length is between 8 and 20 characters.
-Complexity Check: Verifies the presence of uppercase letters, lowercase letters, digits, and special characters.
+Complexity Check: Verifies the presence of uppercase letters, lowercase letters, digits, and special characters.![Screenshot (1)](https://github.com/user-attachments/assets/8725b0ca-c9bf-431c-9847-3c20e5912e15)
+
 Uniqueness Check: Compares the password against a list of common passwords (in a real-world scenario, this should be more sophisticated).
 
