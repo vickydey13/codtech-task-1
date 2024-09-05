@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MIN_LENGTH 8
+#define MAX_LENGTH 20
+
+// Function to check the length of the password
+int checkLength(const char *password) {
+    int len = strlen(password);
+    return (len >= MIN_LENGTH && len <= MAX_LENGTH);
+}
+
+// Function to check the complexity of the password
+int checkComplexity(const char *password) {
+    int hasUpper = 0, hasLower = 0, hasDigit = 0, hasSpecial = 0;
+
+    while (*password) {
+        if (isupper(*password)) hasUpper = 1;
+        else if (islower(*password)) hasLower = 1;
+        else if (isdigit(*password)) hasDigit = 1;
+        else if (ispunct(*password)) hasSpecial = 1;
+        password++;
+    }
+
+    return hasUpper && hasLower && hasDigit && hasSpecial;
+}
+
+// Function to check uniqueness of the password (simple check, more advanced methods can be used)
+int checkUniqueness(const char *password) {
+    // For demonstration, we are simply checking against a predefined common password list.
+    // In a real-world application, this would involve checking against a database or a hash.
+    const char *commonPasswords[] = {
+        "password", "123456", "123456789", "qwerty", "abc123",
+        "password1", "12345678", "12345", "1234567", "admin"
+    };
+
+    for (int i = 0; i < sizeof(commonPasswords) / sizeof(commonPasswords[0]); i++) {
+        if (strcmp(password, commonPasswords[i]) == 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+// Main function to evaluate password strength
+void evaluatePassword(const char *password) {
+    int lengthValid = checkLength(password);
+    int complexityValid = checkComplexity(password);
+    int uniquenessValid = checkUniqueness(password);
+
+    printf("Password: %s\n", password);
+    if (lengthValid && complexityValid && uniquenessValid) {
+        printf("Password strength: Strong\n");
+    } else {
+        if (!lengthValid) {
+            printf("Password should be between %d and %d characters long.\n", MIN_LENGTH, MAX_LENGTH);
+        }
+        if (!complexityValid) {
+            printf("Password should include uppercase letters, lowercase letters, digits, and special characters.\n");
+        }
+        if (!uniquenessValid) {
+            printf("Password is too common. Please choose a more unique password.\n");
+        }
+        printf("Password strength: Weak\n");
+    }
+}
+
+int main() {
+    char password[256];
+
+    printf("Enter a password to check its strength: ");
+    fgets(password, sizeof(password), stdin);
+
+    // Remove trailing newline character if present
+    size_t len = strlen(password);
+    if (len > 0 && password[len - 1] == '\n') {
+        password[len - 1] = '\0';
+    }
+
+    evaluatePassword(password);
+
+    return 0;
+}
